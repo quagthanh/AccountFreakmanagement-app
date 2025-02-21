@@ -1,12 +1,10 @@
 "use server";
 import { signIn } from "@/auth";
-import { errorMonitor } from "events";
-import { InvalidEmailPasswordError } from "./error";
 
-export async function authenticate(email: string, password: string) {
+export async function authenticate(username: string, password: string) {
   try {
     const r = await signIn("credentials", {
-      email: email,
+      username: username,
       password: password,
       redirect: false,
     });
