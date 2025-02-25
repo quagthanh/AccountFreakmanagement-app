@@ -1,32 +1,47 @@
 "use client";
 import React from "react";
-import { Button, Col, Divider, Form, Input, notification, Row } from "antd";
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import {
+  Button,
+  Col,
+  Divider,
+  Form,
+  Input,
+  message,
+  notification,
+  Row,
+} from "antd";
+import {
+  ArrowLeftOutlined,
+  LineChartOutlined,
+  LineOutlined,
+} from "@ant-design/icons";
 import Link from "next/link";
 import { sendRequest } from "@/utils/api";
 import Password from "antd/es/input/Password";
 import { useRouter } from "next/navigation";
 
-const Register = () => {
+export default function Verify({ id }: any) {
   const router = useRouter();
 
   const onFinish = async (values: any) => {
+    const { _id, code } = values;
+    console.log("Check verify value:", values);
     const res = await sendRequest<IBackendRes<any>>({
       method: "POST",
-      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/register`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/check-code`,
       body: {
-        email: values.email,
-        name: values.name,
-        password: values.password,
+        _id: _id,
+        code: code,
       },
     });
 
-    console.log(">>>>Check register res:", res);
+    console.log(">>>>Check after verify res:", res);
     if (res?.data) {
-      router.push(`/verify/${res?.data?._id}`);
+      message.info("Kích hoạt tài khoản thành công");
+      router.push(`/auth/login`);
     } else {
       notification.error({
-        message: "Register failed",
+        message: "Verify failed",
         description: res?.message,
       });
     }
@@ -43,40 +58,28 @@ const Register = () => {
             borderRadius: "5px",
           }}
         >
-          <legend>Đăng Ký Tài Khoản</legend>
+          <legend>Kích hoạt tài khoản</legend>
           <Form
             name="basic"
             onFinish={onFinish}
             autoComplete="off"
             layout="vertical"
           >
+            <Form.Item label="User's id" name="_id" initialValue={id} hidden>
+              <Input disabled />
+            </Form.Item>
+            <div>Mã kích hoạt của bạn đã được gửi về email !</div>
+            <Divider></Divider>
             <Form.Item
-              label="Email"
-              name="email"
+              label="Activate Code"
+              name="code"
               rules={[
                 {
                   required: true,
-                  message: "Please input your email!",
+                  message: "Please input your code!",
                 },
               ]}
             >
-              <Input />
-            </Form.Item>
-
-            <Form.Item
-              label="Password"
-              name="password"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your password!",
-                },
-              ]}
-            >
-              <Input.Password />
-            </Form.Item>
-
-            <Form.Item label="Name" name="name">
               <Input />
             </Form.Item>
 
@@ -97,6 +100,4 @@ const Register = () => {
       </Col>
     </Row>
   );
-};
-
-export default Register;
+}

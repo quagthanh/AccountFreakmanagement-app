@@ -13,6 +13,7 @@ const Login = () => {
     console.log("Check values:", values);
     const { username, password } = values;
     const res = await authenticate(username, password);
+    console.log("Check res:", res);
 
     if (res?.error) {
       notification.error({
