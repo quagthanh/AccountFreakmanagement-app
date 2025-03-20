@@ -1,57 +1,71 @@
-'use client'
-import { Button, Table } from "antd"
+"use client";
 
-const UserTable = () => {
-    const dataSource = [
-        {
-            key: '1',
-            name: 'Mike',
-            age: 32,
-            address: '10 Downing Street',
-        },
-        {
-            key: '2',
-            name: 'John',
-            age: 42,
-            address: '10 Downing Street',
-        },
-    ];
+import { IProps, IUserTable } from "@/types/backend";
+import { Button, Table, TableProps } from "antd";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
+const UserTable = (props: IProps) => {
+  const { users, meta } = props;
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const current = meta?.current;
+  const pageSize = meta?.pageSize;
+  const pages = meta?.pages;
+  const total = meta?.total;
+  const { replace } = useRouter();
 
-    const columns = [
-        {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
-        },
-        {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
-        },
-        {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
-        },
-    ];
+  const onChange = (pagination: any, sorter: any, filter: any, extra: any) => {
+    if (pagination && pagination.current) {
+      const params = new URLSearchParams(searchParams);
+      params.set("current", pagination.current);
+      replace(`${pathname}?${params.toString()}`);
+    }
+  };
+  const dataSource = users?.map((user: IUserTable) => ({
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+  }));
 
-    return (
-        <>
-            <div style={{
-                display: "flex", justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: 20
-            }}>
-                <span>Manager Users</span>
-                <Button>Create User</Button>
-            </div>
-            <Table
-                bordered
-                dataSource={dataSource}
-                columns={columns}
-            />
-        </>
-    )
-}
+  const columns: TableProps<IUserTable>["columns"] = [
+    { title: "Id", dataIndex: "_id", key: "_id" },
+    { title: "Name", dataIndex: "name", key: "name" },
+    { title: "Email", dataIndex: "email", key: "email" },
+  ];
+
+  return (
+    <>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 20,
+        }}
+      >
+        <span>Manager Users</span>
+        <Button>Create User</Button>
+      </div>
+      <Table
+        bordered
+        dataSource={dataSource}
+        columns={columns}
+        rowKey="_id"
+        onChange={onChange}
+        pagination={{
+          current: current,
+          total: total,
+          pageSize: pageSize,
+          showTotal: (total: number, range: [number, number]) => {
+            return (
+              <div>
+                {range[0]}-{range[1]} of {total} users
+              </div>
+            );
+          },
+        }}
+      />
+    </>
+  );
+};
 
 export default UserTable;

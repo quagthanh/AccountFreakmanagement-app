@@ -1,3 +1,4 @@
+import { IRequest } from "@/types/backend";
 import queryString from "query-string";
 
 export const sendRequest = async <T>(props: IRequest) => {

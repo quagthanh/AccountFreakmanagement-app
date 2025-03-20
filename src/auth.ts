@@ -3,6 +3,7 @@ import Credentials from "next-auth/providers/credentials";
 import { InactiveAccountError, InvalidEmailPasswordError } from "./utils/error";
 import { sendRequest } from "./utils/api";
 import { IUser } from "./types/next-auth";
+import { IBackendRes, ILogin } from "./types/backend";
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
