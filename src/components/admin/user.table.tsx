@@ -8,12 +8,14 @@ const UserTable = (props: IProps) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const current = meta?.current;
+  console.log("Check user input", current);
+
   const pageSize = meta?.pageSize;
-  const pages = meta?.pages;
   const total = meta?.total;
   const { replace } = useRouter();
 
   const onChange = (pagination: any, sorter: any, filter: any, extra: any) => {
+    console.log("Check pagination information", pagination.current);
     if (pagination && pagination.current) {
       const params = new URLSearchParams(searchParams);
       params.set("current", pagination.current);

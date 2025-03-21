@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { PageNotFound } from "@/components/admin/pagenotfound";
 import UserTable from "@/components/admin/user.table";
 import { IBackendRes } from "@/types/backend";
 import { sendRequest } from "@/utils/api";
@@ -18,11 +19,14 @@ const ManageUserPage = async (props: any) => {
     headers: `Bearer ${session?.user?.access_token}`,
   });
   console.log(res);
-  if (+res.statusCode == 200) {
-    revalidateTag("users");
-  }
+  // if (+res.statusCode == 200) {
+  //   revalidateTag("users");
+  // }
   if (+res.statusCode == 404) {
     console.log("Có vấn đề xảy ra trong lúc fetch users");
+  }
+  if (current > res.data?.meta?.pages) {
+    return <PageNotFound />;
   }
   return (
     <div>
