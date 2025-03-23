@@ -9,6 +9,7 @@ import {
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { sendRequest } from "@/utils/api";
+import { IBackendRes } from "@/types/backend";
 
 const ModalChangePassword = (props: any) => {
   const { isModalOpen, setIsModalOpen } = props;

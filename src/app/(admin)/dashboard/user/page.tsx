@@ -7,7 +7,6 @@ import { revalidateTag } from "next/cache";
 
 const ManageUserPage = async (props: any) => {
   const session = await auth();
-  console.log("props", props);
   const current = props?.searchParams?.current ?? 1;
   const pageSize = props?.searchParams?.pageSize ?? 5;
 
@@ -18,10 +17,6 @@ const ManageUserPage = async (props: any) => {
     nextOption: { tags: ["users"], revalidate: 60 },
     headers: `Bearer ${session?.user?.access_token}`,
   });
-  console.log(res);
-  // if (+res.statusCode == 200) {
-  //   revalidateTag("users");
-  // }
   if (+res.statusCode == 404) {
     console.log("Có vấn đề xảy ra trong lúc fetch users");
   }
