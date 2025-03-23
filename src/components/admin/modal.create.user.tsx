@@ -16,10 +16,8 @@ const UserCreateModal = (props: any) => {
     setIsUserCreateModalOpen(false);
   };
   const onFinish = async (values: any) => {
-    console.log("values", values);
     const res = await handleCreateUser(values);
     if (res?.data) {
-      console.log("res", res);
       message.success({
         content: "Tạo người dùng thành công",
       });

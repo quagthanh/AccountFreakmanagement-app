@@ -18,7 +18,13 @@ const ManageUserPage = async (props: any) => {
     headers: `Bearer ${session?.user?.access_token}`,
   });
   if (+res.statusCode == 404) {
-    console.log("Có vấn đề xảy ra trong lúc fetch users");
+    // console.log("Có vấn đề xảy ra trong lúc fetch users");
+    return (
+      <>
+        <div>Không lấy được thông tin người dùng</div>
+        <div>Có vấn đề xảy ra trong lúc fetch users</div>
+      </>
+    );
   }
   if (current > res.data?.meta?.pages) {
     return <PageNotFound />;

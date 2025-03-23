@@ -86,11 +86,11 @@ const UserTable = (props: IProps) => {
               }}
             ></EditTwoTone>
             <Popconfirm
-              title="Delete the task"
-              description="Are you sure to delete this task?"
+              title="Xóa người dùng"
+              description=""
               onConfirm={() => handleDelete(record)}
-              okText="Yes"
-              cancelText="No"
+              okText="Có"
+              cancelText="Không"
             >
               <DeleteTwoTone
                 twoToneColor="#ff6363"
@@ -113,8 +113,8 @@ const UserTable = (props: IProps) => {
           marginBottom: 20,
         }}
       >
-        <span>Manager Users</span>
-        <Button onClick={onClick}> Create User</Button>
+        <span>Quản lý người dùng</span>
+        <Button onClick={onClick}> Tạo người dùng</Button>
       </div>
       <Table
         bordered
@@ -129,7 +129,7 @@ const UserTable = (props: IProps) => {
           showTotal: (total: number, range: [number, number]) => {
             return (
               <div>
-                {range[0]}-{range[1]} of {total} users
+                {range[0]}-{range[1]} trên {total} người
               </div>
             );
           },

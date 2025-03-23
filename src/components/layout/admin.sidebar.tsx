@@ -29,7 +29,7 @@ const AdminSideBar = () => {
   const items: MenuItem[] = [
     {
       key: "grp",
-      label: "Hỏi Dân IT",
+      label: "AccountFreak",
       type: "group",
       children: [
         {
@@ -39,7 +39,7 @@ const AdminSideBar = () => {
         },
         {
           key: "users",
-          label: <Link href={"/dashboard/user"}>Manage Users</Link>,
+          label: <Link href={"/dashboard/user"}>Quản lý người dùng</Link>,
           icon: <TeamOutlined />,
         },
         {

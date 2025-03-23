@@ -10,22 +10,17 @@ import {
   notification,
   Row,
 } from "antd";
-import {
-  ArrowLeftOutlined,
-  LineChartOutlined,
-  LineOutlined,
-} from "@ant-design/icons";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { sendRequest } from "@/utils/api";
-import Password from "antd/es/input/Password";
 import { useRouter } from "next/navigation";
+import { IBackendRes } from "@/types/backend";
 
 export default function Verify({ id }: any) {
   const router = useRouter();
 
   const onFinish = async (values: any) => {
     const { _id, code } = values;
-    console.log("Check verify value:", values);
     const res = await sendRequest<IBackendRes<any>>({
       method: "POST",
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/check-code`,
@@ -35,7 +30,6 @@ export default function Verify({ id }: any) {
       },
     });
 
-    console.log(">>>>Check after verify res:", res);
     if (res?.data) {
       message.info("Kích hoạt tài khoản thành công");
       router.push(`/auth/login`);

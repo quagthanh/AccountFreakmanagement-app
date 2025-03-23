@@ -8,7 +8,6 @@ export async function authenticate(username: string, password: string) {
       password: password,
       redirect: false,
     });
-    console.log("Check r", r);
     return r;
   } catch (error) {
     if ((error as any).name === "InvalidEmailPasswordError") {
@@ -24,11 +23,5 @@ export async function authenticate(username: string, password: string) {
     } else {
       return { error: "Internal server error", code: 0 };
     }
-
-    // if (error.cause.err instanceof InvalidLoginError) {
-    //     return {"error": "Incorrect username or password"}
-    // } else {
-    //     throw new Error("Failed to authenticate")
-    // }
   }
 }

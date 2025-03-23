@@ -1,8 +1,7 @@
 "use client";
 import { useHasMounted } from "@/utils/customHook";
-import { Input, Modal, Steps, Form, Button, notification } from "antd";
+import { Input, Modal, Steps, Form, Button, notification, Result } from "antd";
 import {
-  LoadingOutlined,
   SmileOutlined,
   SolutionOutlined,
   UserOutlined,
@@ -76,7 +75,7 @@ export default function ModalReactive(props: any) {
   };
   return (
     <Modal
-      title="Kích hoạt tài khoản"
+      title="Kích hoạt lại tài khoản"
       open={isModalOpen}
       onOk={handleOk}
       onCancel={handleCancel}
@@ -104,7 +103,7 @@ export default function ModalReactive(props: any) {
         <>
           {" "}
           <div style={{ margin: "20px 0" }}>
-            <p>Tài khoản của bạn chưa được kích hoạt</p>
+            <p>Tài khoản của bạn chưa được kích hoạt!</p>
           </div>
           <Form
             name="Verify"
@@ -119,7 +118,7 @@ export default function ModalReactive(props: any) {
 
             <Form.Item>
               <Button type="primary" htmlType="submit">
-                Resend
+                Gửi lại mã
               </Button>
             </Form.Item>
           </Form>
@@ -144,7 +143,7 @@ export default function ModalReactive(props: any) {
 
             <Form.Item>
               <Button type="primary" htmlType="submit">
-                Submit
+                Xác nhận
               </Button>
             </Form.Item>
           </Form>
@@ -154,7 +153,16 @@ export default function ModalReactive(props: any) {
         <>
           {" "}
           <div style={{ margin: "20px 0" }}>
-            <p>Tài khoản của bạn đã được kích hoạt thành công</p>
+            <Result
+              status="success"
+              title="Tài khoản của bạn đã được kích hoạt thành công"
+              subTitle="Bạn có thể quay lại đăng nhập"
+              extra={[
+                <Button type="primary" onClick={handleOk} key="">
+                  Quay lại
+                </Button>,
+              ]}
+            />
           </div>
         </>
       )}

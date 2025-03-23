@@ -26,43 +26,41 @@ const AdminHeader = (props: any) => {
   ];
 
   return (
-    <>
-      <Header
+    <Header
+      style={{
+        padding: 0,
+        display: "flex",
+        background: "#f5f5f5",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}
+    >
+      <Button
+        type="text"
+        icon={collapseMenu ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+        onClick={() => setCollapseMenu(!collapseMenu)}
         style={{
-          padding: 0,
-          display: "flex",
-          background: "#f5f5f5",
-          justifyContent: "space-between",
-          alignItems: "center",
+          fontSize: "16px",
+          width: 64,
+          height: 64,
         }}
-      >
-        <Button
-          type="text"
-          icon={collapseMenu ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-          onClick={() => setCollapseMenu(!collapseMenu)}
+      />
+      <Dropdown menu={{ items }}>
+        <a
+          onClick={(e) => e.preventDefault()}
           style={{
-            fontSize: "16px",
-            width: 64,
-            height: 64,
+            color: "unset",
+            lineHeight: "0 !important",
+            marginRight: 20,
           }}
-        />
-        <Dropdown menu={{ items }}>
-          <a
-            onClick={(e) => e.preventDefault()}
-            style={{
-              color: "unset",
-              lineHeight: "0 !important",
-              marginRight: 20,
-            }}
-          >
-            <Space>
-              Welcome {session?.user?.email ?? ""}
-              <DownOutlined />
-            </Space>
-          </a>
-        </Dropdown>
-      </Header>
-    </>
+        >
+          <Space>
+            Welcome {session?.user?.email ?? ""}
+            <DownOutlined />
+          </Space>
+        </a>
+      </Dropdown>
+    </Header>
   );
 };
 

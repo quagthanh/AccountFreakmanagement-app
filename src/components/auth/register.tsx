@@ -1,16 +1,24 @@
 "use client";
-import React from "react";
-import { Button, Col, Divider, Form, Input, notification, Row } from "antd";
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import React, { useState } from "react";
+import {
+  Button,
+  Card,
+  Divider,
+  Form,
+  Input,
+  notification,
+  Typography,
+} from "antd";
 import Link from "next/link";
 import { sendRequest } from "@/utils/api";
-import Password from "antd/es/input/Password";
 import { useRouter } from "next/navigation";
-
+import { IBackendRes } from "@/types/backend";
+const { Title } = Typography;
 const Register = () => {
   const router = useRouter();
-
+  const [loading, setLoading] = useState<boolean>(false);
   const onFinish = async (values: any) => {
+    setLoading(true);
     const res = await sendRequest<IBackendRes<any>>({
       method: "POST",
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/register`,
@@ -21,81 +29,99 @@ const Register = () => {
       },
     });
 
-    console.log(">>>>Check register res:", res);
     if (res?.data) {
+      setLoading(false);
       router.push(`/verify/${res?.data?._id}`);
     } else {
       notification.error({
-        message: "Register failed",
+        message: "Đăng nhập thất bại",
         description: res?.message,
       });
     }
   };
 
   return (
-    <Row justify={"center"} style={{ marginTop: "30px" }}>
-      <Col xs={24} md={16} lg={8}>
-        <fieldset
-          style={{
-            padding: "15px",
-            margin: "5px",
-            border: "1px solid #ccc",
-            borderRadius: "5px",
-          }}
+    <div style={{ maxWidth: "400px", margin: "40px auto", padding: "20px" }}>
+      <Card>
+        <Title level={3} style={{ textAlign: "center", marginBottom: "20px" }}>
+          Đăng ký
+        </Title>
+        <Form
+          name="basic"
+          onFinish={onFinish}
+          autoComplete="off"
+          layout="vertical"
         >
-          <legend>Đăng Ký Tài Khoản</legend>
-          <Form
-            name="basic"
-            onFinish={onFinish}
-            autoComplete="off"
-            layout="vertical"
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              {
+                required: true,
+                message: "Hãy nhập email!",
+              },
+            ]}
           >
-            <Form.Item
-              label="Email"
-              name="email"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your email!",
+            <Input placeholder="Email " />
+          </Form.Item>
+
+          <Form.Item
+            label="Mật khẩu"
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: "Hãy nhập mật khẩu!",
+              },
+              {
+                min: 6,
+                message: "Mật khẩu phải dài hơn 6 ký tự",
+              },
+            ]}
+          >
+            <Input.Password placeholder="Mật khẩu" />
+          </Form.Item>
+
+          <Form.Item
+            label="Xác nhận mật khẩu"
+            name="confirmPassword"
+            rules={[
+              { required: true, message: "Vui lòng xác nhận mật khẩu!" },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue("password") === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(new Error("Mật khẩu không khớp!"));
                 },
-              ]}
+              }),
+            ]}
+          >
+            <Input.Password placeholder="Xác nhận mật khẩu" />
+          </Form.Item>
+
+          <Form.Item label="Tên người dùng" name="name">
+            <Input placeholder="Tên người dùng" />
+          </Form.Item>
+
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={loading}
+              block
+              size="large"
             >
-              <Input />
-            </Form.Item>
-
-            <Form.Item
-              label="Password"
-              name="password"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your password!",
-                },
-              ]}
-            >
-              <Input.Password />
-            </Form.Item>
-
-            <Form.Item label="Name" name="name">
-              <Input />
-            </Form.Item>
-
-            <Form.Item>
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
-            </Form.Item>
-          </Form>
-          <Link href={"/"}>
-            <ArrowLeftOutlined /> Quay lại trang chủ
-          </Link>
-          <Divider />
-          <div style={{ textAlign: "center" }}>
-            Đã có tài khoản? <Link href={"/auth/login"}>Đăng nhập</Link>
-          </div>
-        </fieldset>
-      </Col>
-    </Row>
+              Đăng ký
+            </Button>
+          </Form.Item>
+        </Form>
+        <Divider />
+        <div style={{ textAlign: "center" }}>
+          Đã có tài khoản? <Link href={"/auth/login"}>Đăng nhập</Link>
+        </div>
+      </Card>
+    </div>
   );
 };
 
